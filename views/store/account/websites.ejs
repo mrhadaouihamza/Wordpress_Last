@@ -1,0 +1,77 @@
+<%- include('../../layouts/store-header') %>
+
+<div style="margin: 2.5rem 0;">
+  <a href="/account" style="color:var(--muted); text-decoration:none; font-size:0.9rem; font-weight:600; display:inline-flex; align-items:center; gap:0.4rem; margin-bottom:1.5rem;">
+    ← Back to Account Dashboard
+  </a>
+
+  <span class="section-kicker">WEBSITE LICENSES</span>
+  <h1 style="font-size:2rem; font-weight:800; margin:0.25rem 0 2rem;">Manage Connected WordPress Sites</h1>
+
+  <div style="display:grid; grid-template-columns: 2fr 1fr; gap:2rem; align-items:start;">
+    <div>
+      <% if (websites && websites.length > 0) { %>
+        <div style="display:flex; flex-direction:column; gap:1.25rem;">
+          <% websites.forEach(function(site) { %>
+            <div style="background:#fff; border:1px solid var(--line); border-radius:var(--radius-lg); padding:1.75rem; box-shadow:var(--shadow-sm);">
+              <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:1rem;">
+                <div>
+                  <h3 style="margin:0 0 0.25rem; font-size:1.2rem;"><%= site.name %></h3>
+                  <a href="<%= site.url %>" target="_blank" style="color:var(--muted); font-size:0.85rem; text-decoration:none;"><%= site.url %> ↗</a>
+                </div>
+                <span style="background:var(--ok-soft); color:var(--ok); font-size:0.75rem; font-weight:700; padding:0.2rem 0.6rem; border-radius:999px; text-transform:uppercase;">
+                  <%= site.status %>
+                </span>
+              </div>
+
+              <div style="background:var(--bg); border-radius:8px; padding:1rem; margin-bottom:1rem; font-size:0.85rem;">
+                <div style="margin-bottom:0.5rem;">
+                  <strong style="color:var(--muted); display:inline-block; width:120px;">API Key:</strong>
+                  <code><%= site.api_key %></code>
+                </div>
+                <div>
+                  <strong style="color:var(--muted); display:inline-block; width:120px;">API Secret:</strong>
+                  <code><%= site.secret %></code>
+                </div>
+              </div>
+
+              <div style="display:flex; justify-content:space-between; align-items:center; font-size:0.85rem; color:var(--muted);">
+                <span>WordPress: <%= site.wp_version || '6.7' %> • PHP: <%= site.php_version || '8.2' %></span>
+                <form method="post" action="/account/websites/<%= site.id %>/delete" onsubmit="return confirm('Disconnect this website?');">
+                  <button type="submit" style="color:var(--bad); background:none; border:none; cursor:pointer; font-size:0.85rem; font-weight:600;">Revoke</button>
+                </form>
+              </div>
+            </div>
+          <% }); %>
+        </div>
+      <% } else { %>
+        <div style="background:#fff; border:1px dashed var(--line); border-radius:12px; padding:3rem; text-align:center;">
+          <p style="color:var(--muted);">No connected sites yet. Fill out the form to generate credentials.</p>
+        </div>
+      <% } %>
+    </div>
+
+    <div style="background:#fff; border:1px solid var(--line); border-radius:var(--radius-lg); padding:2rem; box-shadow:var(--shadow-sm);">
+      <h3 style="margin-top:0; font-size:1.2rem; font-weight:700;">Connect WordPress Site</h3>
+      <p style="color:var(--muted); font-size:0.88rem; line-height:1.5;">Enter your site information below to generate an API Key and Secret for the Wordpresso Auto Updater plugin.</p>
+
+      <form method="post" action="/account/websites">
+        <div style="margin-bottom:1.25rem;">
+          <label style="display:block; font-weight:600; font-size:0.85rem; margin-bottom:0.35rem;">Site Name</label>
+          <input type="text" name="name" required placeholder="My Client Store" style="width:100%; padding:0.65rem 0.85rem; border:1px solid var(--line); border-radius:8px; font-size:0.9rem;">
+        </div>
+
+        <div style="margin-bottom:1.5rem;">
+          <label style="display:block; font-weight:600; font-size:0.85rem; margin-bottom:0.35rem;">Site URL</label>
+          <input type="url" name="url" required placeholder="https://example.com" style="width:100%; padding:0.65rem 0.85rem; border:1px solid var(--line); border-radius:8px; font-size:0.9rem;">
+        </div>
+
+        <button type="submit" class="btn btn-primary" style="width:100%; justify-content:center; cursor:pointer;">
+          Generate Credentials
+        </button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<%- include('../../layouts/store-footer') %>

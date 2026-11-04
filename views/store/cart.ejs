@@ -1,0 +1,77 @@
+<%- include('../layouts/store-header') %>
+
+<div style="margin: 2.5rem 0; max-width:900px; margin-left:auto; margin-right:auto;">
+  <span class="section-kicker">SHOPPING CART</span>
+  <h1 style="font-size:2.2rem; font-weight:800; margin:0.5rem 0 2rem;">Review Your Cart</h1>
+
+  <% if (cart && cart.length > 0) { %>
+    <div style="display:grid; grid-template-columns: 2fr 1fr; gap:2.5rem; align-items:start;">
+      <div style="background:#fff; border:1px solid var(--line); border-radius:var(--radius-lg); overflow:hidden; box-shadow:var(--shadow-sm);">
+        <table style="width:100%; border-collapse:collapse; text-align:left; font-size:0.95rem;">
+          <thead>
+            <tr style="border-bottom:1px solid var(--line); background:var(--bg); color:var(--muted); font-size:0.8rem; text-transform:uppercase;">
+              <th style="padding:1rem 1.25rem;">Item</th>
+              <th style="padding:1rem 1.25rem;">Price</th>
+              <th style="padding:1rem 1.25rem; text-align:right;">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% cart.forEach(function(item, idx) { %>
+              <tr style="border-bottom:1px solid var(--line);">
+                <td style="padding:1.25rem;">
+                  <span style="font-size:0.75rem; font-weight:700; color:var(--brand); text-transform:uppercase; display:block; margin-bottom:0.25rem;">
+                    <%= item.category %>
+                  </span>
+                  <strong><%= item.name %></strong>
+                </td>
+                <td style="padding:1.25rem; font-weight:700;">
+                  $<%= Number(item.price).toFixed(2) %> USDT
+                </td>
+                <td style="padding:1.25rem; text-align:right;">
+                  <form method="post" action="/cart/remove" style="margin:0;">
+                    <input type="hidden" name="index" value="<%= idx %>">
+                    <button type="submit" style="color:var(--bad); background:none; border:none; cursor:pointer; font-size:0.85rem; font-weight:600;">Remove</button>
+                  </form>
+                </td>
+              </tr>
+            <% }); %>
+          </tbody>
+        </table>
+      </div>
+
+      <div style="background:#fff; border:1px solid var(--line); border-radius:var(--radius-lg); padding:1.75rem; box-shadow:var(--shadow-sm);">
+        <h3 style="margin:0 0 1rem; font-size:1.15rem; font-weight:700;">Order Summary</h3>
+        <div style="display:flex; justify-content:space-between; margin-bottom:0.75rem; color:var(--muted);">
+          <span>Subtotal</span>
+          <span>$<%= Number(total).toFixed(2) %> USDT</span>
+        </div>
+        <div style="display:flex; justify-content:space-between; margin-bottom:1.25rem; color:var(--muted);">
+          <span>Network Processing</span>
+          <span>$0.00</span>
+        </div>
+        <div style="border-top:1px solid var(--line); padding-top:1rem; margin-top:1rem; display:flex; justify-content:space-between; font-size:1.25rem; font-weight:800; color:var(--ink);">
+          <span>Total</span>
+          <span>$<%= Number(total).toFixed(2) %> USDT</span>
+        </div>
+
+        <form method="post" action="/checkout" style="margin-top:1.5rem;">
+          <button type="submit" class="btn btn-primary btn-lg" style="width:100%; justify-content:center; cursor:pointer;">
+            Proceed to Checkout <span>→</span>
+          </button>
+        </form>
+
+        <a href="/store" style="display:block; text-align:center; margin-top:1rem; font-size:0.85rem; color:var(--muted); text-decoration:none;">
+          Continue Shopping
+        </a>
+      </div>
+    </div>
+  <% } else { %>
+    <div style="background:#fff; border:1px dashed var(--line); border-radius:12px; padding:3.5rem; text-align:center;">
+      <h3 style="margin-top:0;">Your cart is currently empty</h3>
+      <p style="color:var(--muted); margin-bottom:1.5rem;">Browse our marketplace for plugins, themes, or membership plans.</p>
+      <a href="/store" class="btn btn-primary">Browse Store Catalog</a>
+    </div>
+  <% } %>
+</div>
+
+<%- include('../layouts/store-footer') %>

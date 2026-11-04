@@ -1,0 +1,60 @@
+<%- include('../../layouts/store-header') %>
+
+<div style="margin: 2.5rem 0;">
+  <a href="/account" style="color:var(--muted); text-decoration:none; font-size:0.9rem; font-weight:600; display:inline-flex; align-items:center; gap:0.4rem; margin-bottom:1.5rem;">
+    ← Back to Account Dashboard
+  </a>
+
+  <span class="section-kicker">PURCHASE HISTORY</span>
+  <h1 style="font-size:2rem; font-weight:800; margin:0.25rem 0 2rem;">Orders & Invoices</h1>
+
+  <% if (orders && orders.length > 0) { %>
+    <div style="background:#fff; border:1px solid var(--line); border-radius:var(--radius-lg); overflow:hidden; box-shadow:var(--shadow-sm);">
+      <table style="width:100%; border-collapse:collapse; text-align:left; font-size:0.9rem;">
+        <thead>
+          <tr style="border-bottom:1px solid var(--line); background:var(--bg); color:var(--muted); font-size:0.75rem; text-transform:uppercase;">
+            <th style="padding:1rem;">Order Code</th>
+            <th style="padding:1rem;">Date</th>
+            <th style="padding:1rem;">Items</th>
+            <th style="padding:1rem;">Amount</th>
+            <th style="padding:1rem;">Status</th>
+            <th style="padding:1rem; text-align:right;">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% orders.forEach(function(order) { %>
+            <tr style="border-bottom:1px solid var(--line);">
+              <td style="padding:1rem; font-family:monospace; font-weight:700;"><%= order.order_code %></td>
+              <td style="padding:1rem; color:var(--muted);"><%= new Date(order.created_at).toLocaleDateString() %></td>
+              <td style="padding:1rem;">
+                <% order.items.forEach(function(it) { %>
+                  <div><strong><%= it.product_name %></strong> (<%= it.category %>)</div>
+                <% }); %>
+              </td>
+              <td style="padding:1rem; font-weight:700;">$<%= Number(order.amount).toFixed(2) %> USDT</td>
+              <td style="padding:1rem;">
+                <span style="background:<%= order.status === 'confirmed' ? 'var(--ok-soft)' : 'var(--warn-soft)' %>; color:<%= order.status === 'confirmed' ? 'var(--ok)' : 'var(--warn)' %>; font-size:0.75rem; font-weight:700; padding:0.25rem 0.6rem; border-radius:4px; text-transform:uppercase;">
+                  <%= order.status %>
+                </span>
+              </td>
+              <td style="padding:1rem; text-align:right;">
+                <% if (order.status === 'pending') { %>
+                  <a href="/checkout/<%= order.order_code %>" class="btn btn-primary" style="font-size:0.8rem; padding:0.35rem 0.75rem;">Pay Now</a>
+                <% } else { %>
+                  <span style="color:var(--ok); font-size:0.85rem; font-weight:600;">Active ✓</span>
+                <% } %>
+              </td>
+            </tr>
+          <% }); %>
+        </tbody>
+      </table>
+    </div>
+  <% } else { %>
+    <div style="background:#fff; border:1px dashed var(--line); border-radius:12px; padding:3rem; text-align:center;">
+      <p style="color:var(--muted); margin:0;">No orders found in your account.</p>
+      <a href="/store" class="btn btn-primary" style="margin-top:1rem;">Explore Store</a>
+    </div>
+  <% } %>
+</div>
+
+<%- include('../../layouts/store-footer') %>

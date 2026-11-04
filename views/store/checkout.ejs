@@ -1,0 +1,54 @@
+<%- include('../layouts/store-header') %>
+
+<div style="margin: 2.5rem 0; max-width:800px; margin-left:auto; margin-right:auto;">
+  <span class="section-kicker">CRYPTO PAYMENT</span>
+  <h1 style="font-size:2.2rem; font-weight:800; margin:0.5rem 0 1rem;">Complete Your Order</h1>
+  
+  <div style="background:#fff; border:1px solid var(--line); border-radius:var(--radius-lg); padding:2rem; box-shadow:var(--shadow-md); margin-bottom:2rem;">
+    <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid var(--line); padding-bottom:1.25rem; margin-bottom:1.5rem;">
+      <div>
+        <span style="font-size:0.8rem; color:var(--muted); text-transform:uppercase;">Order Code</span>
+        <div style="font-size:1.2rem; font-weight:800; font-family:monospace;"><%= order.order_code %></div>
+      </div>
+      <div style="text-align:right;">
+        <span style="font-size:0.8rem; color:var(--muted); text-transform:uppercase;">Amount Due</span>
+        <div style="font-size:1.6rem; font-weight:800; color:var(--brand);">$<%= Number(order.amount).toFixed(2) %> USDT</div>
+      </div>
+    </div>
+
+    <% if (order.status === 'confirmed') { %>
+      <div style="background:var(--ok-soft); border:1px solid var(--ok); border-radius:8px; padding:1.5rem; text-align:center; color:var(--ok); margin-bottom:1.5rem;">
+        <h3 style="margin:0 0 0.5rem; font-size:1.2rem;">Payment Confirmed!</h3>
+        <p style="margin:0; font-size:0.95rem;">Your digital access has been granted. You can view your products in your account.</p>
+        <a href="/account" class="btn btn-primary" style="margin-top:1rem; display:inline-block;">Go to My Account</a>
+      </div>
+    <% } else { %>
+      <div style="background:var(--bg); border-radius:8px; padding:1.25rem; margin-bottom:1.5rem;">
+        <h4 style="margin:0 0 0.5rem; font-size:0.95rem;">Payment Instructions:</h4>
+        <ol style="margin:0; padding-left:1.25rem; font-size:0.9rem; color:var(--ink-soft); line-height:1.6;">
+          <li>Send exact amount <strong><%= Number(order.amount).toFixed(2) %> USDT</strong> via <strong>BNB Smart Chain (BEP-20)</strong>.</li>
+          <li>Recipient Wallet Address:
+            <code style="display:block; padding:0.5rem; background:#fff; border:1px solid var(--line); border-radius:6px; margin:0.3rem 0; word-break:break-all;"><%= wallet %></code>
+          </li>
+          <li>USDT Contract: <code style="word-break:break-all;"><%= usdtContract %></code></li>
+          <li>After sending, paste your Transaction Hash (tx_hash) below to verify.</li>
+        </ol>
+      </div>
+
+      <form method="post" action="/checkout/<%= order.order_code %>/verify">
+        <div style="margin-bottom:1.25rem;">
+          <label style="display:block; font-weight:600; font-size:0.9rem; margin-bottom:0.4rem;">Transaction Hash (TxID)</label>
+          <input type="text" name="tx_hash" required placeholder="0x..." style="width:100%; padding:0.75rem 1rem; border:1px solid var(--line); border-radius:8px; font-family:monospace; font-size:0.95rem;">
+        </div>
+
+        <div style="display:flex; gap:1rem;">
+          <button type="submit" class="btn btn-primary btn-lg" style="flex:1; justify-content:center; cursor:pointer;">
+            Verify Payment & Activate
+          </button>
+        </div>
+      </form>
+    <% } %>
+  </div>
+</div>
+
+<%- include('../layouts/store-footer') %>

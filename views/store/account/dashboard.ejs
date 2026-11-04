@@ -1,0 +1,79 @@
+<%- include('../../layouts/store-header') %>
+
+<div style="margin: 2.5rem 0;">
+  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:2rem; flex-wrap:wrap; gap:1rem;">
+    <div>
+      <span class="section-kicker">MY ACCOUNT</span>
+      <h1 style="font-size:2rem; font-weight:800; margin:0.25rem 0;">Welcome, <%= customer.name || customer.email %></h1>
+      <p style="color:var(--muted); margin:0;">Manage your connected WordPress sites, purchases, and license keys.</p>
+    </div>
+    <div style="display:flex; gap:0.5rem;">
+      <a href="/account/websites" class="btn btn-outline" style="font-size:0.9rem;">Connected Websites (<%= websites.length %>)</a>
+      <a href="/account/orders" class="btn btn-outline" style="font-size:0.9rem;">Orders (<%= orders.length %>)</a>
+    </div>
+  </div>
+
+  <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(260px, 1fr)); gap:1.5rem; margin-bottom:2.5rem;">
+    <div style="background:#fff; border:1px solid var(--line); border-radius:var(--radius); padding:1.5rem; box-shadow:var(--shadow-xs);">
+      <span style="font-size:0.8rem; color:var(--muted); font-weight:700; text-transform:uppercase;">Connected Sites</span>
+      <div style="font-size:2rem; font-weight:800; color:var(--ink); margin:0.25rem 0;"><%= websites.length %></div>
+      <a href="/account/websites" style="font-size:0.85rem; color:var(--brand); text-decoration:none; font-weight:600;">Manage credentials →</a>
+    </div>
+
+    <div style="background:#fff; border:1px solid var(--line); border-radius:var(--radius); padding:1.5rem; box-shadow:var(--shadow-xs);">
+      <span style="font-size:0.8rem; color:var(--muted); font-weight:700; text-transform:uppercase;">Active Orders</span>
+      <div style="font-size:2rem; font-weight:800; color:var(--ink); margin:0.25rem 0;"><%= orders.length %></div>
+      <a href="/account/orders" style="font-size:0.85rem; color:var(--brand); text-decoration:none; font-weight:600;">View invoices →</a>
+    </div>
+
+    <div style="background:#fff; border:1px solid var(--line); border-radius:var(--radius); padding:1.5rem; box-shadow:var(--shadow-xs);">
+      <span style="font-size:0.8rem; color:var(--muted); font-weight:700; text-transform:uppercase;">Account Status</span>
+      <div style="font-size:2rem; font-weight:800; color:var(--ok); margin:0.25rem 0; text-transform:capitalize;"><%= customer.status %></div>
+      <span style="font-size:0.85rem; color:var(--muted);">Full update rights enabled</span>
+    </div>
+  </div>
+
+  <div style="background:#fff; border:1px solid var(--line); border-radius:var(--radius-lg); padding:2rem; box-shadow:var(--shadow-sm); margin-bottom:2.5rem;">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1.5rem;">
+      <h3 style="margin:0; font-size:1.2rem; font-weight:700;">Connected WordPress Websites</h3>
+      <a href="/account/websites" class="btn btn-primary" style="font-size:0.85rem; padding:0.4rem 0.8rem;">+ Connect New Site</a>
+    </div>
+
+    <% if (websites && websites.length > 0) { %>
+      <div style="overflow-x:auto;">
+        <table style="width:100%; border-collapse:collapse; text-align:left; font-size:0.9rem;">
+          <thead>
+            <tr style="border-bottom:1px solid var(--line); background:var(--bg); color:var(--muted); font-size:0.75rem; text-transform:uppercase;">
+              <th style="padding:0.75rem 1rem;">Site Name</th>
+              <th style="padding:0.75rem 1rem;">URL</th>
+              <th style="padding:0.75rem 1rem;">API Key</th>
+              <th style="padding:0.75rem 1rem;">Status</th>
+              <th style="padding:0.75rem 1rem;">Last Checked</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% websites.forEach(function(site) { %>
+              <tr style="border-bottom:1px solid var(--line);">
+                <td style="padding:1rem; font-weight:600;"><%= site.name %></td>
+                <td style="padding:1rem; color:var(--muted);"><%= site.url %></td>
+                <td style="padding:1rem;"><code style="font-size:0.85rem;"><%= site.api_key %></code></td>
+                <td style="padding:1rem;">
+                  <span style="background:var(--ok-soft); color:var(--ok); font-size:0.75rem; font-weight:700; padding:0.2rem 0.5rem; border-radius:4px; text-transform:uppercase;">
+                    <%= site.status %>
+                  </span>
+                </td>
+                <td style="padding:1rem; color:var(--muted); font-size:0.85rem;">
+                  <%= site.last_check_at ? new Date(site.last_check_at).toLocaleDateString() : 'Never' %>
+                </td>
+              </tr>
+            <% }); %>
+          </tbody>
+        </table>
+      </div>
+    <% } else { %>
+      <p style="color:var(--muted); margin:0;">No WordPress websites connected yet. Click "+ Connect New Site" to generate API credentials for the Wordpresso Auto Updater plugin.</p>
+    <% } %>
+  </div>
+</div>
+
+<%- include('../../layouts/store-footer') %>

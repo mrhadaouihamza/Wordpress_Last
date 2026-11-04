@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Admin Login — Wordpresso</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/admin.css">
+</head>
+<body class="admin" style="display:flex; min-height:100vh; align-items:center; justify-content:center; background:#f1f5f9;">
+  <div style="background:#fff; border:1px solid var(--line); border-radius:16px; padding:2.5rem; width:100%; max-width:400px; box-shadow:var(--shadow-md);">
+    <div style="font-weight:800; font-size:1.5rem; margin-bottom:0.25rem;">Wordpresso Admin</div>
+    <p style="color:var(--muted); font-size:0.9rem; margin-top:0; margin-bottom:1.5rem;">Sign in to manage plugins, licenses, and updates.</p>
+
+    <% if (locals.error) { %>
+      <div style="background:var(--bad-soft); color:var(--bad); padding:0.75rem 1rem; border-radius:8px; font-size:0.85rem; margin-bottom:1.25rem;">
+        <%= error %>
+      </div>
+    <% } %>
+
+    <form method="post" action="/admin/login">
+      <div style="margin-bottom:1.25rem;">
+        <label style="display:block; font-weight:600; font-size:0.85rem; margin-bottom:0.4rem;">Admin Email</label>
+        <input type="email" name="email" value="admin@wordpresso.store" required style="width:100%; padding:0.75rem 1rem; border:1px solid var(--line); border-radius:8px; font-size:0.95rem;">
+      </div>
+
+      <div style="margin-bottom:1.5rem;">
+        <label style="display:block; font-weight:600; font-size:0.85rem; margin-bottom:0.4rem;">Password</label>
+        <input type="password" name="password" value="admin123" required style="width:100%; padding:0.75rem 1rem; border:1px solid var(--line); border-radius:8px; font-size:0.95rem;">
+      </div>
+
+      <button type="submit" class="btn btn-primary btn-lg" style="width:100%; justify-content:center; cursor:pointer;">
+        Authenticate
+      </button>
+    </form>
+  </div>
+</body>
+</html>

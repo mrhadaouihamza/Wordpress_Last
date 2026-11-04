@@ -1,0 +1,48 @@
+<%- include('../layouts/admin-header') %>
+
+<div style="margin-bottom:2rem;">
+  <h1 style="font-size:1.8rem; font-weight:800; margin:0 0 0.5rem;">Connected Websites</h1>
+  <p class="muted" style="margin:0;">Registered WordPress sites receiving automated plugin update packages.</p>
+</div>
+
+<div style="background:#fff; border:1px solid var(--line); border-radius:14px; overflow:hidden; box-shadow:var(--shadow-sm);">
+  <table style="width:100%; border-collapse:collapse; text-align:left; font-size:0.9rem;">
+    <thead>
+      <tr style="border-bottom:1px solid var(--line); background:var(--bg); color:var(--muted); font-size:0.75rem; text-transform:uppercase;">
+        <th style="padding:1rem 1.25rem;">Site & URL</th>
+        <th style="padding:1rem 1.25rem;">API Key</th>
+        <th style="padding:1rem 1.25rem;">WordPress / PHP</th>
+        <th style="padding:1rem 1.25rem;">Last Check</th>
+        <th style="padding:1rem 1.25rem;">Status</th>
+        <th style="padding:1rem 1.25rem; text-align:right;">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% websites.forEach(function(w) { %>
+        <tr style="border-bottom:1px solid var(--line);">
+          <td style="padding:1rem 1.25rem;">
+            <strong><%= w.name %></strong>
+            <div style="font-size:0.8rem; color:var(--muted);"><%= w.url %></div>
+          </td>
+          <td style="padding:1rem 1.25rem;"><code style="font-size:0.85rem;"><%= w.api_key %></code></td>
+          <td style="padding:1rem 1.25rem; font-size:0.85rem; color:var(--muted);">WP <%= w.wp_version || '6.7' %> • PHP <%= w.php_version || '8.2' %></td>
+          <td style="padding:1rem 1.25rem; font-size:0.85rem; color:var(--muted);">
+            <%= w.last_check_at ? new Date(w.last_check_at).toLocaleString() : 'Never' %>
+          </td>
+          <td style="padding:1rem 1.25rem;">
+            <span style="background:<%= w.status === 'active' ? 'var(--ok-soft)' : 'var(--bad-soft)' %>; color:<%= w.status === 'active' ? 'var(--ok)' : 'var(--bad)' %>; font-size:0.75rem; font-weight:700; padding:0.25rem 0.6rem; border-radius:4px; text-transform:uppercase;">
+              <%= w.status %>
+            </span>
+          </td>
+          <td style="padding:1rem 1.25rem; text-align:right;">
+            <form method="post" action="/admin/websites/<%= w.id %>/revoke" style="display:inline;">
+              <button type="submit" class="btn btn-ghost" style="padding:0.3rem 0.6rem; font-size:0.8rem; border:1px solid var(--line); border-radius:6px; cursor:pointer; color:var(--bad);">Revoke</button>
+            </form>
+          </td>
+        </tr>
+      <% }); %>
+    </tbody>
+  </table>
+</div>
+
+<%- include('../layouts/admin-footer') %>

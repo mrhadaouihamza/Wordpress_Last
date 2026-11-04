@@ -1,0 +1,22 @@
+<%- include('../layouts/store-header') %>
+
+<div style="margin: 3rem 0; max-width:800px; margin-left:auto; margin-right:auto;">
+  <span class="section-kicker">LEGAL INFORMATION</span>
+  <h1 style="font-size:2.2rem; font-weight:800; margin:0.4rem 0 1.5rem;"><%= title %></h1>
+
+  <div style="background:#fff; border:1px solid var(--line); border-radius:var(--radius-lg); padding:2.5rem; line-height:1.8; font-size:1rem; color:var(--ink-soft); box-shadow:var(--shadow-sm);">
+    <h3>1. Acceptance of Terms</h3>
+    <p>By accessing the Wordpresso store and update services, you agree to comply with our licensing conditions, account policies, and software distribution rules.</p>
+
+    <h3>2. Plugin & Theme Distribution</h3>
+    <p>Wordpresso provides original GPL-compatible extensions and themes. Connected website licenses entitle you to receive verified updates via the Wordpresso Auto Updater plugin during your active subscription period.</p>
+
+    <h3>3. Cryptographic Payments & Confirmations</h3>
+    <p>Payments are conducted in USDT over the BNB Smart Chain network. Upon blockchain confirmation, access to the corresponding packages is immediately associated with your customer profile.</p>
+
+    <h3>4. Contact & Inquiries</h3>
+    <p>For questions or support regarding subscriptions and downloads, contact <%= locals.supportEmail || 'support@wordpresso.store' %>.</p>
+  </div>
+</div>
+
+<%- include('../layouts/store-footer') %>

@@ -1,0 +1,132 @@
+<%- include('../layouts/store-header') %>
+
+<section class="market-hero">
+  <div class="market-hero-copy">
+    <div class="market-badges">
+      <span class="hero-pill"><i></i> WordPress tools, made accessible</span>
+      <a class="membership-pill" href="/plans"><span>✦</span> Membership plans <b>→</b></a>
+    </div>
+    <h1><%= locals.storeTagline || 'Premium WordPress tools for your next great website.' %></h1>
+    <p><%= locals.storeDescription || 'Browse plugins and themes in one catalog, then manage purchases and eligible plugin updates from your account.' %></p>
+    <div class="market-actions">
+      <a class="btn btn-primary btn-lg" href="/store">Browse the store <span>→</span></a>
+      <a class="btn btn-lg" href="/#why-us">How updates work <span>↗</span></a>
+    </div>
+    <div class="market-proof">
+      <span><b>✓</b> Secure account access</span>
+      <span><b>✓</b> Clear plan periods</span>
+      <span><b>✓</b> BNB Smart Chain checkout</span>
+    </div>
+  </div>
+  <div class="market-hero-art">
+    <div class="art-orbit orbit-one"></div><div class="art-orbit orbit-two"></div>
+    <div class="product-preview-window">
+      <div class="preview-toolbar"><div class="preview-dots"><i></i><i></i><i></i></div><span>WORDPRESS TOOLKIT</span><span class="preview-live"><i></i> READY</span></div>
+      <% if (locals.featured) { %>
+      <div class="preview-art">
+        <div class="preview-shape shape-a"></div><div class="preview-shape shape-b"></div>
+        <div class="preview-product-icon"><%= featured.category === 'Theme' ? '◫' : '✦' %></div>
+        <span class="preview-category"><%= featured.category %></span>
+        <span class="preview-price">$<%= Number(featured.price).toFixed(2) %> <small>USDT</small></span>
+      </div>
+      <div class="preview-product-copy">
+        <span class="section-kicker">FEATURED PRODUCT</span>
+        <h2><%= featured.name %></h2>
+        <p><%= featured.description.length > 115 ? featured.description.substring(0, 115) + '…' : featured.description %></p>
+        <div class="preview-meta">
+          <span>◈ Secure account checkout</span>
+          <a href="/store">Browse the store <b>→</b></a>
+        </div>
+      </div>
+      <% } else { %>
+      <div class="preview-empty-art"><div class="preview-product-icon">W</div><span>YOUR WORDPRESS TOOLKIT</span></div>
+      <div class="preview-product-copy">
+        <span class="section-kicker">THE STORE</span>
+        <h2>Build your collection</h2>
+        <p>Products appear here after they are published by the administrator.</p>
+        <div class="preview-meta"><span>◈ Plugins · Themes</span><a href="/store">Browse the store <b>→</b></a></div>
+      </div>
+      <% } %>
+      <div class="preview-bottom"><span>Wordpresso marketplace</span><span>● Account services online</span></div>
+    </div>
+    <div class="art-floating-card floating-one"><span class="float-icon purple">↻</span><span><b>Simple updates</b><small>Through WordPress</small></span></div>
+    <div class="art-floating-card floating-two"><span class="float-icon green">✓</span><span><b>Secure checkout</b><small>Verified payments</small></span></div>
+  </div>
+</section>
+
+<section class="market-categories" aria-labelledby="category-title">
+  <div class="market-section-heading">
+    <div>
+      <span class="section-kicker">BROWSE THE CATALOG</span>
+      <h2 id="category-title"><a href="/store">Find the right tools for your site</a></h2>
+    </div>
+    <p>Browse the available WordPress themes and plugins. Listings and prices come from the live store.</p>
+  </div>
+  <div class="category-feature-grid">
+    <a class="category-feature theme-feature" href="/store?category=Theme">
+      <div class="category-feature-top"><span class="category-icon">▧</span><span class="count-pill"><%= locals.themeCount || 0 %> themes</span></div>
+      <div>
+        <span class="section-kicker">DESIGN YOUR SITE</span>
+        <h3>WordPress Themes</h3>
+        <p>Explore modern block themes and clean layouts currently offered in the Wordpresso store.</p>
+      </div>
+      <div class="category-feature-foot"><span>Browse themes</span><b>→</b></div>
+      <span class="category-watermark">T</span>
+    </a>
+    <a class="category-feature plugin-feature" href="/store?category=Plugin">
+      <div class="category-feature-top"><span class="category-icon">⌘</span><span class="count-pill"><%= locals.pluginCount || 0 %> plugins</span></div>
+      <div>
+        <span class="section-kicker">EXTEND WORDPRESS</span>
+        <h3>WordPress Plugins</h3>
+        <p>Find functionality for your projects and manage eligible updates in WordPress.</p>
+      </div>
+      <div class="category-feature-foot"><span>Browse plugins</span><b>→</b></div>
+      <span class="category-watermark">P</span>
+    </a>
+  </div>
+</section>
+
+<section class="why-market" id="why-us">
+  <div class="featured-title">
+    <span class="section-kicker">MADE FOR WORDPRESS USERS</span>
+    <h2>A simpler way to manage your tools</h2>
+    <p>Product access, website connections, and update eligibility in one account.</p>
+  </div>
+  <div class="why-card-grid">
+    <article class="why-card"><span class="why-icon blue">◈</span><span class="why-metric">ACCOUNT CONTROL</span><h3>One place for your sites</h3><p>Register websites, view connection status, and manage their updater credentials from your account.</p></article>
+    <article class="why-card"><span class="why-icon violet">↻</span><span class="why-metric">NATIVE WORKFLOW</span><h3>Updates inside WordPress</h3><p>Eligible plugin releases are delivered through the Wordpresso Auto Updater plugin.</p></article>
+    <article class="why-card"><span class="why-icon green">✓</span><span class="why-metric">CHECKED ACCESS</span><h3>Subscription-aware updates</h3><p>The service checks account access before offering an update to a connected site.</p></article>
+    <article class="why-card"><span class="why-icon amber">⇩</span><span class="why-metric">AFTER PAYMENT</span><h3>Protected downloads</h3><p>Purchased ZIP packages are kept outside direct public access and unlocked for eligible customers.</p></article>
+    <article class="why-card"><span class="why-icon rose">◎</span><span class="why-metric">PAYMENT STATUS</span><h3>Clear order history</h3><p>Review pending and confirmed orders from your account without losing track of payment status.</p></article>
+    <article class="why-card"><span class="why-icon teal">↺</span><span class="why-metric">FLEXIBLE ORDERS</span><h3>Cancel before you pay</h3><p>Changed your mind? Pending orders can be cancelled from your account or the checkout page.</p></article>
+  </div>
+</section>
+
+<section class="about-market" id="about">
+  <div class="about-copy">
+    <span class="section-kicker">ABOUT WORDPRESSO</span>
+    <h2>Your WordPress tools, organized around your workflow.</h2>
+    <p>Wordpresso brings product listings, purchase access, website connections, and plugin updates together in a single storefront and account area.</p>
+    <p>Choose an available product or plan, complete checkout, then return to your account to manage your order and eligible plugin access.</p>
+    <div class="about-points">
+      <span><b>✓</b> Product listings managed by the store</span>
+      <span><b>✓</b> Account-based subscriptions</span>
+      <span><b>✓</b> WordPress-native update delivery</span>
+    </div>
+    <a class="btn btn-primary" href="/account">Open your account <span>→</span></a>
+  </div>
+  <div class="faq-panel">
+    <div class="faq-heading"><span class="faq-mark">?</span><div><span class="section-kicker">NEED TO KNOW</span><h3>Frequently asked questions</h3></div></div>
+    <details open><summary>How do I receive plugin updates?</summary><p>Register your WordPress site in your account, configure the Wordpresso Auto Updater plugin with its credentials, and check for updates from WordPress.</p></details>
+    <details><summary>How does checkout work?</summary><p>Checkout uses USDT on BNB Smart Chain. After sending payment, submit the transaction hash; the service verifies the network, token transfer, destination, amount, and confirmations.</p></details>
+    <details><summary>Do subscriptions renew automatically?</summary><p>No. The plans are paid once for the displayed access period. You can place another order to extend access.</p></details>
+    <details><summary>Where can I find my orders?</summary><p>Sign in and open My account to see order status, active subscriptions, and eligible product downloads.</p></details>
+  </div>
+</section>
+
+<section class="market-bottom-cta">
+  <div><span class="section-kicker">START EXPLORING</span><h2>Find your next WordPress essential.</h2><p>Browse what is available today and keep your connected sites in sync.</p></div>
+  <a class="btn btn-primary btn-lg" href="/store">Browse the store <span>→</span></a>
+</section>
+
+<%- include('../layouts/store-footer') %>

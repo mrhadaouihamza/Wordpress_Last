@@ -1,0 +1,71 @@
+<%- include('../layouts/admin-header') %>
+
+<div style="margin-bottom:2rem;">
+  <h1 style="font-size:1.8rem; font-weight:800; margin:0 0 0.5rem;">System Overview</h1>
+  <p class="muted" style="margin:0;">Wordpresso store metrics, customer entitlements, and WordPress updater engine status.</p>
+</div>
+
+<div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:1.25rem; margin-bottom:2.5rem;">
+  <div style="background:#fff; border:1px solid var(--line); border-radius:12px; padding:1.5rem; box-shadow:var(--shadow-xs);">
+    <span class="muted" style="font-size:0.8rem; font-weight:700; text-transform:uppercase;">Gross Revenue</span>
+    <div style="font-size:2rem; font-weight:800; color:var(--ink); margin:0.25rem 0;">$<%= stats.revenue.toFixed(2) %> <small style="font-size:0.8rem; color:var(--muted);">USDT</small></div>
+    <span style="font-size:0.8rem; color:var(--ok); font-weight:600;">100% on-chain settled</span>
+  </div>
+
+  <div style="background:#fff; border:1px solid var(--line); border-radius:12px; padding:1.5rem; box-shadow:var(--shadow-xs);">
+    <span class="muted" style="font-size:0.8rem; font-weight:700; text-transform:uppercase;">Active Products</span>
+    <div style="font-size:2rem; font-weight:800; color:var(--brand); margin:0.25rem 0;"><%= stats.productCount %></div>
+    <span style="font-size:0.8rem; color:var(--muted);"><%= stats.pluginCount %> plugins, <%= stats.themeCount %> themes</span>
+  </div>
+
+  <div style="background:#fff; border:1px solid var(--line); border-radius:12px; padding:1.5rem; box-shadow:var(--shadow-xs);">
+    <span class="muted" style="font-size:0.8rem; font-weight:700; text-transform:uppercase;">Registered Customers</span>
+    <div style="font-size:2rem; font-weight:800; color:var(--ink); margin:0.25rem 0;"><%= stats.customerCount %></div>
+    <span style="font-size:0.8rem; color:var(--muted);"><%= stats.websiteCount %> connected sites</span>
+  </div>
+
+  <div style="background:#fff; border:1px solid var(--line); border-radius:12px; padding:1.5rem; box-shadow:var(--shadow-xs);">
+    <span class="muted" style="font-size:0.8rem; font-weight:700; text-transform:uppercase;">Pending Orders</span>
+    <div style="font-size:2rem; font-weight:800; color:var(--warn); margin:0.25rem 0;"><%= stats.pendingOrders %></div>
+    <a href="/admin/orders" style="font-size:0.8rem; color:var(--brand); text-decoration:none; font-weight:600;">Manage orders →</a>
+  </div>
+</div>
+
+<div style="display:grid; grid-template-columns: 2fr 1fr; gap:2rem;">
+  <!-- Recent Update Activity -->
+  <div style="background:#fff; border:1px solid var(--line); border-radius:14px; padding:1.75rem; box-shadow:var(--shadow-sm);">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1.25rem;">
+      <h3 style="margin:0; font-size:1.15rem; font-weight:700;">Recent Updater & API Requests</h3>
+      <a href="/admin/logs" style="font-size:0.85rem; color:var(--brand); text-decoration:none; font-weight:600;">Full Logs →</a>
+    </div>
+
+    <% if (recentLogs && recentLogs.length > 0) { %>
+      <div style="display:flex; flex-direction:column; gap:0.75rem;">
+        <% recentLogs.forEach(function(l) { %>
+          <div style="display:flex; justify-content:space-between; align-items:center; padding:0.75rem 1rem; background:var(--bg); border-radius:8px; font-size:0.85rem;">
+            <div>
+              <span style="font-family:monospace; font-weight:700; color:var(--brand);"><%= l.action %></span>
+              <div style="color:var(--ink-soft); margin-top:0.2rem;"><%= l.message %></div>
+            </div>
+            <span style="color:var(--muted); font-size:0.8rem; white-space:nowrap;"><%= new Date(l.created_at).toLocaleTimeString() %></span>
+          </div>
+        <% }); %>
+      </div>
+    <% } else { %>
+      <p class="muted">No recent API activity logged.</p>
+    <% } %>
+  </div>
+
+  <!-- Quick Actions -->
+  <div style="background:#fff; border:1px solid var(--line); border-radius:14px; padding:1.75rem; box-shadow:var(--shadow-sm);">
+    <h3 style="margin:0 0 1.25rem; font-size:1.15rem; font-weight:700;">Quick Actions</h3>
+    <div style="display:flex; flex-direction:column; gap:0.75rem;">
+      <a href="/admin/products" class="btn btn-primary" style="justify-content:center;">Add New Plugin / Theme</a>
+      <a href="/admin/orders" class="btn btn-outline" style="justify-content:center;">Review Customer Orders</a>
+      <a href="/admin/payments" class="btn btn-outline" style="justify-content:center;">Configure Payment Wallet</a>
+      <a href="/admin/store-settings" class="btn btn-outline" style="justify-content:center;">Storefront Settings</a>
+    </div>
+  </div>
+</div>
+
+<%- include('../layouts/admin-footer') %>

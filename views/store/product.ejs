@@ -1,0 +1,91 @@
+<%- include('../layouts/store-header') %>
+
+<div style="margin: 2.5rem 0;">
+  <a href="/store" style="color:var(--muted); text-decoration:none; font-size:0.9rem; font-weight:600; display:inline-flex; align-items:center; gap:0.4rem; margin-bottom:1.5rem;">
+    ← Back to Store Catalog
+  </a>
+
+  <div style="display:grid; grid-template-columns: 2fr 1fr; gap:2.5rem; align-items:start;">
+    <div>
+      <div style="display:flex; align-items:center; gap:0.75rem; margin-bottom:0.75rem;">
+        <span style="font-size:0.8rem; font-weight:700; text-transform:uppercase; letter-spacing:0.05em; background:var(--brand-soft); color:var(--brand); padding:0.25rem 0.6rem; border-radius:6px;">
+          <%= product.category === 'Theme' ? '◫ Theme' : '⌘ Plugin' %>
+        </span>
+        <span style="font-size:0.9rem; color:var(--muted); font-family:monospace;">Version <%= product.version %></span>
+      </div>
+
+      <h1 style="font-size:2.4rem; font-weight:800; margin:0 0 1rem 0; line-height:1.2;"><%= product.name %></h1>
+      
+      <div style="font-size:1.1rem; color:var(--ink-soft); line-height:1.7; margin-bottom:2rem; background:#fff; padding:1.75rem; border-radius:var(--radius); border:1px solid var(--line);">
+        <p style="margin-top:0;"><%= product.description %></p>
+      </div>
+
+      <% if (product.category === 'Plugin') { %>
+        <div style="background:#fff; border:1px solid var(--line); border-radius:var(--radius); padding:1.5rem; margin-bottom:2rem;">
+          <h3 style="margin-top:0; font-size:1.1rem; font-weight:700;">Technical & Compatibility Details</h3>
+          <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(180px, 1fr)); gap:1rem; margin-top:1rem;">
+            <div style="background:var(--bg); padding:0.75rem 1rem; border-radius:8px;">
+              <span style="font-size:0.75rem; color:var(--muted); display:block;">Plugin Basename</span>
+              <code style="font-size:0.85rem;"><%= product.basename %></code>
+            </div>
+            <div style="background:var(--bg); padding:0.75rem 1rem; border-radius:8px;">
+              <span style="font-size:0.75rem; color:var(--muted); display:block;">WordPress Minimum</span>
+              <strong>WP <%= product.min_wp_version || '5.8+' %></strong>
+            </div>
+            <div style="background:var(--bg); padding:0.75rem 1rem; border-radius:8px;">
+              <span style="font-size:0.75rem; color:var(--muted); display:block;">PHP Minimum</span>
+              <strong>PHP <%= product.min_php_version || '8.0+' %></strong>
+            </div>
+            <div style="background:var(--bg); padding:0.75rem 1rem; border-radius:8px;">
+              <span style="font-size:0.75rem; color:var(--muted); display:block;">Tested up to</span>
+              <strong>WP <%= product.tested_wp_version || '6.7' %></strong>
+            </div>
+          </div>
+        </div>
+
+        <% if (product.changelog) { %>
+          <div style="background:#fff; border:1px solid var(--line); border-radius:var(--radius); padding:1.5rem;">
+            <h3 style="margin-top:0; font-size:1.1rem; font-weight:700;">Release Changelog</h3>
+            <pre style="background:var(--bg); padding:1rem; border-radius:8px; font-size:0.88rem; line-height:1.6; white-space:pre-wrap; font-family:monospace; margin:0;"><%= product.changelog %></pre>
+          </div>
+        <% } %>
+      <% } %>
+    </div>
+
+    <!-- Purchase card -->
+    <div style="background:#fff; border:1px solid var(--line); border-radius:var(--radius-lg); padding:2rem; box-shadow:var(--shadow-md); position:sticky; top:2rem;">
+      <div style="font-size:0.8rem; font-weight:700; color:var(--muted); text-transform:uppercase;">One-Time Purchase</div>
+      <div style="font-size:2.2rem; font-weight:800; color:var(--ink); margin:0.5rem 0;">
+        $<%= Number(product.price).toFixed(2) %> <small style="font-size:1rem; color:var(--muted); font-weight:600;">USDT</small>
+      </div>
+      <div style="color:var(--ok); font-size:0.85rem; font-weight:600; margin-bottom:1.5rem; display:flex; align-items:center; gap:0.4rem;">
+        <span>✓</span> Instant digital delivery to account
+      </div>
+
+      <form method="post" action="/cart/add" style="margin-bottom:1.5rem;">
+        <input type="hidden" name="product_id" value="<%= product.id %>">
+        <input type="hidden" name="category" value="<%= product.category %>">
+        <button type="submit" class="btn btn-primary btn-lg" style="width:100%; justify-content:center; cursor:pointer;">
+          Add to Cart <span>→</span>
+        </button>
+      </form>
+
+      <ul style="list-style:none; padding:0; margin:0; font-size:0.88rem; color:var(--ink-soft); display:flex; flex-direction:column; gap:0.75rem;">
+        <li style="display:flex; gap:0.5rem;">
+          <span style="color:var(--brand);">✓</span> Includes 1 Connected Website license
+        </li>
+        <li style="display:flex; gap:0.5rem;">
+          <span style="color:var(--brand);">✓</span> Direct Auto-Updater entitlement
+        </li>
+        <li style="display:flex; gap:0.5rem;">
+          <span style="color:var(--brand);">✓</span> Verified BNB Smart Chain checkout
+        </li>
+        <li style="display:flex; gap:0.5rem;">
+          <span style="color:var(--brand);">✓</span> Protected ZIP package downloads
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<%- include('../layouts/store-footer') %>

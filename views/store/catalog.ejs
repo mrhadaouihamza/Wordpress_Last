@@ -1,0 +1,64 @@
+<%- include('../layouts/store-header') %>
+
+<div style="margin: 2rem 0;">
+  <div style="display:flex; justify-content:space-between; align-items:flex-end; flex-wrap:wrap; gap:1.5rem; margin-bottom:2rem;">
+    <div>
+      <span class="section-kicker">STORE CATALOG</span>
+      <h1 style="margin:0 0 0.5rem 0; font-size:2rem; font-weight:800;">WordPress Plugins & Themes</h1>
+      <p style="color:var(--muted); margin:0;">Explore verified WordPress assets with direct updater integration.</p>
+    </div>
+
+    <!-- Category filter buttons -->
+    <div style="display:flex; gap:0.5rem; align-items:center; background:#fff; padding:0.3rem; border-radius:10px; border:1px solid var(--line);">
+      <a href="/store" class="btn <%= !locals.selectedCategory ? 'btn-primary' : 'btn-ghost' %>" style="font-size:0.85rem; padding:0.4rem 0.8rem; border-radius:8px;">All</a>
+      <a href="/store?category=Plugin" class="btn <%= locals.selectedCategory === 'Plugin' ? 'btn-primary' : 'btn-ghost' %>" style="font-size:0.85rem; padding:0.4rem 0.8rem; border-radius:8px;">Plugins</a>
+      <a href="/store?category=Theme" class="btn <%= locals.selectedCategory === 'Theme' ? 'btn-primary' : 'btn-ghost' %>" style="font-size:0.85rem; padding:0.4rem 0.8rem; border-radius:8px;">Themes</a>
+    </div>
+  </div>
+
+  <% if (locals.products && locals.products.length > 0) { %>
+    <div style="display:grid; grid-template-columns:repeat(auto-fill, minmax(320px, 1fr)); gap:1.75rem;">
+      <% products.forEach(function(item) { %>
+        <div style="background:var(--card); border:1px solid var(--line); border-radius:var(--radius-lg); padding:1.75rem; display:flex; flex-direction:column; justify-content:space-between; transition:box-shadow 0.2s; box-shadow:var(--shadow-sm);">
+          <div>
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem;">
+              <span style="font-size:0.75rem; font-weight:700; text-transform:uppercase; letter-spacing:0.05em; background:var(--brand-soft); color:var(--brand); padding:0.25rem 0.6rem; border-radius:6px;">
+                <%= item.category === 'Theme' ? '◫ Theme' : '⌘ Plugin' %>
+              </span>
+              <span style="font-size:0.85rem; color:var(--muted); font-family:monospace;">v<%= item.version %></span>
+            </div>
+            <h3 style="margin:0 0 0.5rem 0; font-size:1.25rem; font-weight:700;">
+              <a href="/product/<%= item.category.toLowerCase() %>/<%= item.id %>" style="color:inherit; text-decoration:none;"><%= item.name %></a>
+            </h3>
+            <p style="color:var(--muted); font-size:0.92rem; line-height:1.5; margin-bottom:1.5rem;">
+              <%= item.description.length > 130 ? item.description.substring(0, 130) + '…' : item.description %>
+            </p>
+          </div>
+
+          <div style="border-top:1px solid var(--line); padding-top:1.25rem; display:flex; align-items:center; justify-content:space-between;">
+            <div>
+              <div style="font-size:1.4rem; font-weight:800; color:var(--ink);">$<%= Number(item.price).toFixed(2) %></div>
+              <div style="font-size:0.75rem; color:var(--muted);">USDT on BSC</div>
+            </div>
+            <div style="display:flex; gap:0.5rem;">
+              <a href="/product/<%= item.category.toLowerCase() %>/<%= item.id %>" class="btn btn-ghost" style="padding:0.5rem 0.8rem; font-size:0.85rem; border:1px solid var(--line);">Details</a>
+              <form method="post" action="/cart/add" style="margin:0;">
+                <input type="hidden" name="product_id" value="<%= item.id %>">
+                <input type="hidden" name="category" value="<%= item.category %>">
+                <button type="submit" class="btn btn-primary" style="padding:0.5rem 0.9rem; font-size:0.85rem; cursor:pointer;">Add to Cart</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      <% }); %>
+    </div>
+  <% } else { %>
+    <div style="background:#fff; border:1px dashed var(--line); border-radius:12px; padding:3rem; text-align:center;">
+      <h3>No items found in this category</h3>
+      <p style="color:var(--muted);">Check back soon or explore our other available categories.</p>
+      <a href="/store" class="btn btn-primary" style="margin-top:1rem;">View All Products</a>
+    </div>
+  <% } %>
+</div>
+
+<%- include('../layouts/store-footer') %>

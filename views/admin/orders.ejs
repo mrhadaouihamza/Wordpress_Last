@@ -1,0 +1,60 @@
+<%- include('../layouts/admin-header') %>
+
+<div style="margin-bottom:2rem;">
+  <h1 style="font-size:1.8rem; font-weight:800; margin:0 0 0.5rem;">Customer Orders</h1>
+  <p class="muted" style="margin:0;">Confirm, verify on-chain transaction hashes, or manage pending orders.</p>
+</div>
+
+<div style="background:#fff; border:1px solid var(--line); border-radius:14px; overflow:hidden; box-shadow:var(--shadow-sm);">
+  <table style="width:100%; border-collapse:collapse; text-align:left; font-size:0.9rem;">
+    <thead>
+      <tr style="border-bottom:1px solid var(--line); background:var(--bg); color:var(--muted); font-size:0.75rem; text-transform:uppercase;">
+        <th style="padding:1rem 1.25rem;">Order Code</th>
+        <th style="padding:1rem 1.25rem;">Customer</th>
+        <th style="padding:1rem 1.25rem;">Items</th>
+        <th style="padding:1rem 1.25rem;">Amount</th>
+        <th style="padding:1rem 1.25rem;">Tx Hash</th>
+        <th style="padding:1rem 1.25rem;">Status</th>
+        <th style="padding:1rem 1.25rem; text-align:right;">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% orders.forEach(function(o) { %>
+        <tr style="border-bottom:1px solid var(--line);">
+          <td style="padding:1rem 1.25rem; font-family:monospace; font-weight:700;"><%= o.order_code %></td>
+          <td style="padding:1rem 1.25rem;">
+            Customer #<%= o.customer_id %>
+          </td>
+          <td style="padding:1rem 1.25rem;">
+            <% o.items.forEach(function(it) { %>
+              <div><strong><%= it.product_name %></strong></div>
+            <% }); %>
+          </td>
+          <td style="padding:1rem 1.25rem; font-weight:700;">$<%= Number(o.amount).toFixed(2) %> USDT</td>
+          <td style="padding:1rem 1.25rem; font-family:monospace; font-size:0.8rem; max-width:180px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">
+            <%= o.tx_hash || 'Pending hash' %>
+          </td>
+          <td style="padding:1rem 1.25rem;">
+            <span style="background:<%= o.status === 'confirmed' ? 'var(--ok-soft)' : (o.status === 'pending' ? 'var(--warn-soft)' : 'var(--bad-soft)') %>; color:<%= o.status === 'confirmed' ? 'var(--ok)' : (o.status === 'pending' ? 'var(--warn)' : 'var(--bad)') %>; font-size:0.75rem; font-weight:700; padding:0.25rem 0.6rem; border-radius:4px; text-transform:uppercase;">
+              <%= o.status %>
+            </span>
+          </td>
+          <td style="padding:1rem 1.25rem; text-align:right;">
+            <% if (o.status === 'pending') { %>
+              <form method="post" action="/admin/orders/<%= o.id %>/confirm" style="display:inline;">
+                <button type="submit" class="btn btn-primary" style="padding:0.3rem 0.6rem; font-size:0.8rem; border-radius:6px; cursor:pointer;">Confirm</button>
+              </form>
+              <form method="post" action="/admin/orders/<%= o.id %>/reject" style="display:inline;">
+                <button type="submit" class="btn btn-ghost" style="padding:0.3rem 0.6rem; font-size:0.8rem; border:1px solid var(--line); border-radius:6px; cursor:pointer; color:var(--bad);">Reject</button>
+              </form>
+            <% } else { %>
+              <span class="muted" style="font-size:0.85rem;">Completed</span>
+            <% } %>
+          </td>
+        </tr>
+      <% }); %>
+    </tbody>
+  </table>
+</div>
+
+<%- include('../layouts/admin-footer') %>

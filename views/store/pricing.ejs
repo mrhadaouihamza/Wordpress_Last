@@ -1,0 +1,65 @@
+<%- include('../layouts/store-header') %>
+
+<div style="margin: 2.5rem 0;">
+  <div style="text-align:center; max-width:700px; margin:0 auto 3rem;">
+    <span class="section-kicker">MEMBERSHIP & PLANS</span>
+    <h1 style="font-size:2.5rem; font-weight:800; margin:0.5rem 0 1rem;">Simple, Transparent Access</h1>
+    <p style="color:var(--muted); font-size:1.1rem; line-height:1.6;">
+      Get updates and downloads across all your websites with our developer plans. One-time payment, no auto-renewing surprises.
+    </p>
+  </div>
+
+  <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(320px, 1fr)); gap:2rem; max-width:1100px; margin:0 auto;">
+    <% plans.forEach(function(plan, idx) { %>
+      <div style="background:#fff; border:<%= idx === 1 ? '2px solid var(--brand)' : '1px solid var(--line)' %>; border-radius:var(--radius-xl); padding:2.5rem; display:flex; flex-direction:column; justify-content:space-between; position:relative; box-shadow:<%= idx === 1 ? 'var(--shadow-lg)' : 'var(--shadow-sm)' %>;">
+        <% if (idx === 1) { %>
+          <div style="position:absolute; top:-12px; left:50%; transform:translateX(-50%); background:var(--brand); color:#fff; font-size:0.75rem; font-weight:800; padding:0.25rem 0.8rem; border-radius:999px; text-transform:uppercase; letter-spacing:0.05em;">
+            Most Popular
+          </div>
+        <% } %>
+
+        <div>
+          <h3 style="font-size:1.4rem; font-weight:800; margin:0 0 0.5rem;"><%= plan.name %></h3>
+          <p style="color:var(--muted); font-size:0.95rem; line-height:1.5; margin-bottom:1.5rem;"><%= plan.description %></p>
+
+          <div style="margin:1.5rem 0; padding-bottom:1.5rem; border-bottom:1px solid var(--line);">
+            <div style="font-size:2.6rem; font-weight:800; color:var(--ink);">
+              $<%= Number(plan.price).toFixed(2) %>
+              <small style="font-size:0.9rem; color:var(--muted); font-weight:500;">USDT / <%= plan.term_months %> months</small>
+            </div>
+            <div style="font-size:0.85rem; color:var(--muted); margin-top:0.25rem;">Includes <%= plan.website_limit %> connected WordPress sites</div>
+          </div>
+
+          <ul style="list-style:none; padding:0; margin:0 0 2rem; display:flex; flex-direction:column; gap:0.85rem; font-size:0.92rem;">
+            <li style="display:flex; gap:0.5rem; align-items:center;">
+              <span style="color:var(--ok); font-weight:bold;">✓</span>
+              <span><strong><%= plan.website_limit %></strong> Connected WordPress Sites</span>
+            </li>
+            <li style="display:flex; gap:0.5rem; align-items:center;">
+              <span style="color:var(--ok); font-weight:bold;">✓</span>
+              <span><strong><%= plan.term_months %> Months</strong> of automatic plugin updates</span>
+            </li>
+            <li style="display:flex; gap:0.5rem; align-items:center;">
+              <span style="color:var(--ok); font-weight:bold;">✓</span>
+              <span>Full access to included plugins</span>
+            </li>
+            <li style="display:flex; gap:0.5rem; align-items:center;">
+              <span style="color:var(--ok); font-weight:bold;">✓</span>
+              <span>Direct ZIP package downloads</span>
+            </li>
+          </ul>
+        </div>
+
+        <form method="post" action="/cart/add" style="margin:0;">
+          <input type="hidden" name="product_id" value="<%= plan.id %>">
+          <input type="hidden" name="category" value="Plan">
+          <button type="submit" class="btn <%= idx === 1 ? 'btn-primary' : 'btn-outline' %> btn-lg" style="width:100%; justify-content:center; cursor:pointer;">
+            Choose <%= plan.name %>
+          </button>
+        </form>
+      </div>
+    <% }); %>
+  </div>
+</div>
+
+<%- include('../layouts/store-footer') %>

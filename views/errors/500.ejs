@@ -1,0 +1,12 @@
+<%- include('../layouts/store-header') %>
+
+<div style="margin: 5rem 0; text-align:center;">
+  <span class="section-kicker">SERVER ERROR 500</span>
+  <h1 style="font-size:3rem; font-weight:800; margin:0.5rem 0 1rem;">Internal Server Error</h1>
+  <p style="color:var(--muted); max-width:500px; margin:0 auto 2rem; font-size:1.1rem;">
+    <%= locals.message || 'An unexpected error occurred while processing your request.' %>
+  </p>
+  <a href="/" class="btn btn-primary btn-lg">Return to Storefront <span>→</span></a>
+</div>
+
+<%- include('../layouts/store-footer') %>

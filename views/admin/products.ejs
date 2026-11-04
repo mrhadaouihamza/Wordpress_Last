@@ -1,0 +1,92 @@
+<%- include('../layouts/admin-header') %>
+
+<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:2rem; flex-wrap:wrap; gap:1rem;">
+  <div>
+    <h1 style="font-size:1.8rem; font-weight:800; margin:0 0 0.5rem;">Catalog Products</h1>
+    <p class="muted" style="margin:0;">Manage WordPress plugins, themes, pricing, and versions available for distribution.</p>
+  </div>
+</div>
+
+<div style="background:#fff; border:1px solid var(--line); border-radius:14px; overflow:hidden; box-shadow:var(--shadow-sm); margin-bottom:2.5rem;">
+  <div style="padding:1.25rem 1.5rem; border-bottom:1px solid var(--line); background:var(--bg); font-weight:700;">
+    Plugins (Updater Ready)
+  </div>
+  <table style="width:100%; border-collapse:collapse; text-align:left; font-size:0.9rem;">
+    <thead>
+      <tr style="border-bottom:1px solid var(--line); background:#fff; color:var(--muted); font-size:0.75rem; text-transform:uppercase;">
+        <th style="padding:1rem 1.5rem;">Name & Basename</th>
+        <th style="padding:1rem 1.5rem;">Version</th>
+        <th style="padding:1rem 1.5rem;">Price</th>
+        <th style="padding:1rem 1.5rem;">Status</th>
+        <th style="padding:1rem 1.5rem; text-align:right;">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% plugins.forEach(function(p) { %>
+        <tr style="border-bottom:1px solid var(--line);">
+          <td style="padding:1rem 1.5rem;">
+            <strong><%= p.name %></strong>
+            <div style="font-size:0.8rem; color:var(--muted); font-family:monospace;"><%= p.basename %></div>
+          </td>
+          <td style="padding:1rem 1.5rem; font-family:monospace;">v<%= p.version %></td>
+          <td style="padding:1rem 1.5rem; font-weight:700;">$<%= Number(p.price).toFixed(2) %> USDT</td>
+          <td style="padding:1rem 1.5rem;">
+            <span style="background:<%= p.active ? 'var(--ok-soft)' : 'var(--bad-soft)' %>; color:<%= p.active ? 'var(--ok)' : 'var(--bad)' %>; font-size:0.75rem; font-weight:700; padding:0.2rem 0.5rem; border-radius:4px; text-transform:uppercase;">
+              <%= p.active ? 'Active' : 'Draft' %>
+            </span>
+          </td>
+          <td style="padding:1rem 1.5rem; text-align:right;">
+            <form method="post" action="/admin/products/plugin/<%= p.id %>/toggle" style="display:inline;">
+              <button type="submit" class="btn btn-ghost" style="padding:0.3rem 0.6rem; font-size:0.8rem; border:1px solid var(--line); border-radius:6px; cursor:pointer;">
+                <%= p.active ? 'Deactivate' : 'Publish' %>
+              </button>
+            </form>
+          </td>
+        </tr>
+      <% }); %>
+    </tbody>
+  </table>
+</div>
+
+<div style="background:#fff; border:1px solid var(--line); border-radius:14px; overflow:hidden; box-shadow:var(--shadow-sm);">
+  <div style="padding:1.25rem 1.5rem; border-bottom:1px solid var(--line); background:var(--bg); font-weight:700;">
+    Themes
+  </div>
+  <table style="width:100%; border-collapse:collapse; text-align:left; font-size:0.9rem;">
+    <thead>
+      <tr style="border-bottom:1px solid var(--line); background:#fff; color:var(--muted); font-size:0.75rem; text-transform:uppercase;">
+        <th style="padding:1rem 1.5rem;">Theme Name</th>
+        <th style="padding:1rem 1.5rem;">Version</th>
+        <th style="padding:1rem 1.5rem;">Price</th>
+        <th style="padding:1rem 1.5rem;">Status</th>
+        <th style="padding:1rem 1.5rem; text-align:right;">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% themes.forEach(function(t) { %>
+        <tr style="border-bottom:1px solid var(--line);">
+          <td style="padding:1rem 1.5rem;">
+            <strong><%= t.name %></strong>
+            <div style="font-size:0.8rem; color:var(--muted); font-family:monospace;"><%= t.slug %></div>
+          </td>
+          <td style="padding:1rem 1.5rem; font-family:monospace;">v<%= t.version %></td>
+          <td style="padding:1rem 1.5rem; font-weight:700;">$<%= Number(t.price).toFixed(2) %> USDT</td>
+          <td style="padding:1rem 1.5rem;">
+            <span style="background:<%= t.active ? 'var(--ok-soft)' : 'var(--bad-soft)' %>; color:<%= t.active ? 'var(--ok)' : 'var(--bad)' %>; font-size:0.75rem; font-weight:700; padding:0.2rem 0.5rem; border-radius:4px; text-transform:uppercase;">
+              <%= t.active ? 'Active' : 'Draft' %>
+            </span>
+          </td>
+          <td style="padding:1rem 1.5rem; text-align:right;">
+            <form method="post" action="/admin/products/theme/<%= t.id %>/toggle" style="display:inline;">
+              <button type="submit" class="btn btn-ghost" style="padding:0.3rem 0.6rem; font-size:0.8rem; border:1px solid var(--line); border-radius:6px; cursor:pointer;">
+                <%= t.active ? 'Deactivate' : 'Publish' %>
+              </button>
+            </form>
+          </td>
+        </tr>
+      <% }); %>
+    </tbody>
+  </table>
+</div>
+
+<%- include('../layouts/admin-footer') %>

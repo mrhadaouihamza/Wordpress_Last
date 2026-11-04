@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title><%= locals.title ? locals.title + ' — ' : '' %>Wordpresso Admin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/admin.css">
+</head>
+<body class="admin">
+<header class="admin-header">
+  <div class="admin-header-inner">
+    <div style="display:flex; align-items:center; gap:1.5rem;">
+      <a class="brand" href="/admin" style="font-weight:800; font-size:1.25rem; text-decoration:none; color:inherit;">
+        Wordpresso <span style="font-size:0.75rem; background:var(--brand-soft); color:var(--brand); padding:0.2rem 0.5rem; border-radius:4px; font-weight:700;">ADMIN</span>
+      </a>
+      <nav class="admin-nav" style="display:flex; gap:0.5rem; align-items:center;">
+        <a href="/admin" class="nav-item <%= locals.activeTab === 'dashboard' ? 'active' : '' %>" style="padding:0.4rem 0.75rem; border-radius:6px; text-decoration:none; color:inherit; font-weight:600; font-size:0.9rem;">Dashboard</a>
+        <a href="/admin/products" class="nav-item <%= locals.activeTab === 'products' ? 'active' : '' %>" style="padding:0.4rem 0.75rem; border-radius:6px; text-decoration:none; color:inherit; font-weight:600; font-size:0.9rem;">Products</a>
+        <a href="/admin/orders" class="nav-item <%= locals.activeTab === 'orders' ? 'active' : '' %>" style="padding:0.4rem 0.75rem; border-radius:6px; text-decoration:none; color:inherit; font-weight:600; font-size:0.9rem;">Orders</a>
+        <a href="/admin/customers" class="nav-item <%= locals.activeTab === 'customers' ? 'active' : '' %>" style="padding:0.4rem 0.75rem; border-radius:6px; text-decoration:none; color:inherit; font-weight:600; font-size:0.9rem;">Customers</a>
+        <a href="/admin/websites" class="nav-item <%= locals.activeTab === 'websites' ? 'active' : '' %>" style="padding:0.4rem 0.75rem; border-radius:6px; text-decoration:none; color:inherit; font-weight:600; font-size:0.9rem;">Websites</a>
+        <a href="/admin/logs" class="nav-item <%= locals.activeTab === 'logs' ? 'active' : '' %>" style="padding:0.4rem 0.75rem; border-radius:6px; text-decoration:none; color:inherit; font-weight:600; font-size:0.9rem;">Logs</a>
+        <a href="/admin/store-settings" class="nav-item <%= locals.activeTab === 'settings' ? 'active' : '' %>" style="padding:0.4rem 0.75rem; border-radius:6px; text-decoration:none; color:inherit; font-weight:600; font-size:0.9rem;">Settings</a>
+        <a href="/admin/payments" class="nav-item <%= locals.activeTab === 'payments' ? 'active' : '' %>" style="padding:0.4rem 0.75rem; border-radius:6px; text-decoration:none; color:inherit; font-weight:600; font-size:0.9rem;">Payments</a>
+      </nav>
+    </div>
+    <div style="display:flex; align-items:center; gap:1rem;">
+      <a href="/" target="_blank" style="font-size:0.85rem; color:var(--muted); text-decoration:none;">View Store ↗</a>
+      <form method="post" action="/admin/logout" style="margin:0;">
+        <button type="submit" class="btn btn-ghost" style="padding:0.35rem 0.8rem; font-size:0.85rem; border:1px solid var(--line); border-radius:6px; background:#fff; cursor:pointer;">Logout</button>
+      </form>
+    </div>
+  </div>
+</header>
+<main class="admin-main" style="max-width:1200px; margin:2rem auto; padding:0 1.5rem;">

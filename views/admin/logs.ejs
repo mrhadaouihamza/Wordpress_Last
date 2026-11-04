@@ -1,0 +1,49 @@
+<%- include('../layouts/admin-header') %>
+
+<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:2rem; flex-wrap:wrap; gap:1rem;">
+  <div>
+    <h1 style="font-size:1.8rem; font-weight:800; margin:0 0 0.5rem;">Audit & Update Logs</h1>
+    <p class="muted" style="margin:0;">Inspect client update requests, download token issuances, and HMAC verification events.</p>
+  </div>
+  <form method="post" action="/admin/logs/prune">
+    <button type="submit" class="btn btn-outline" style="font-size:0.85rem; padding:0.4rem 0.8rem; cursor:pointer;">
+      Prune Old Logs
+    </button>
+  </form>
+</div>
+
+<div style="background:#fff; border:1px solid var(--line); border-radius:14px; overflow:hidden; box-shadow:var(--shadow-sm);">
+  <table style="width:100%; border-collapse:collapse; text-align:left; font-size:0.9rem;">
+    <thead>
+      <tr style="border-bottom:1px solid var(--line); background:var(--bg); color:var(--muted); font-size:0.75rem; text-transform:uppercase;">
+        <th style="padding:1rem 1.25rem;">Timestamp</th>
+        <th style="padding:1rem 1.25rem;">Action</th>
+        <th style="padding:1rem 1.25rem;">Outcome</th>
+        <th style="padding:1rem 1.25rem;">IP Address</th>
+        <th style="padding:1rem 1.25rem;">Message & Context</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% logs.forEach(function(l) { %>
+        <tr style="border-bottom:1px solid var(--line);">
+          <td style="padding:1rem 1.25rem; font-size:0.85rem; color:var(--muted); white-space:nowrap;">
+            <%= new Date(l.created_at).toLocaleString() %>
+          </td>
+          <td style="padding:1rem 1.25rem;"><code style="font-size:0.85rem;"><%= l.action %></code></td>
+          <td style="padding:1rem 1.25rem;">
+            <span style="background:<%= l.outcome === 'success' ? 'var(--ok-soft)' : 'var(--bad-soft)' %>; color:<%= l.outcome === 'success' ? 'var(--ok)' : 'var(--bad)' %>; font-size:0.75rem; font-weight:700; padding:0.2rem 0.5rem; border-radius:4px; text-transform:uppercase;">
+              <%= l.outcome %>
+            </span>
+          </td>
+          <td style="padding:1rem 1.25rem; font-family:monospace; font-size:0.85rem;"><%= l.ip %></td>
+          <td style="padding:1rem 1.25rem;">
+            <div><%= l.message %></div>
+            <div style="font-family:monospace; font-size:0.75rem; color:var(--muted); margin-top:0.25rem;"><%= l.context %></div>
+          </td>
+        </tr>
+      <% }); %>
+    </tbody>
+  </table>
+</div>
+
+<%- include('../layouts/admin-footer') %>

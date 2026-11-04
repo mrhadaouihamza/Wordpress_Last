@@ -1,0 +1,41 @@
+<%- include('../layouts/admin-header') %>
+
+<div style="margin-bottom:2rem; max-width:700px;">
+  <h1 style="font-size:1.8rem; font-weight:800; margin:0 0 0.5rem;">Storefront Settings</h1>
+  <p class="muted" style="margin:0;">Custom titles, slogans, descriptions, and customer support contact details.</p>
+</div>
+
+<div style="background:#fff; border:1px solid var(--line); border-radius:14px; padding:2rem; max-width:700px; box-shadow:var(--shadow-sm);">
+  <form method="post" action="/admin/store-settings">
+    <div style="margin-bottom:1.25rem;">
+      <label style="display:block; font-weight:600; font-size:0.9rem; margin-bottom:0.4rem;">Site Title</label>
+      <input type="text" name="site_title" value="<%= settings.site_title %>" required style="width:100%; padding:0.75rem 1rem; border:1px solid var(--line); border-radius:8px; font-size:0.95rem;">
+    </div>
+
+    <div style="margin-bottom:1.25rem;">
+      <label style="display:block; font-weight:600; font-size:0.9rem; margin-bottom:0.4rem;">Site Tagline</label>
+      <input type="text" name="site_tagline" value="<%= settings.site_tagline %>" required style="width:100%; padding:0.75rem 1rem; border:1px solid var(--line); border-radius:8px; font-size:0.95rem;">
+    </div>
+
+    <div style="margin-bottom:1.25rem;">
+      <label style="display:block; font-weight:600; font-size:0.9rem; margin-bottom:0.4rem;">Store Description</label>
+      <textarea name="site_description" rows="3" style="width:100%; padding:0.75rem 1rem; border:1px solid var(--line); border-radius:8px; font-size:0.95rem; font-family:inherit;"><%= settings.site_description %></textarea>
+    </div>
+
+    <div style="margin-bottom:1.25rem;">
+      <label style="display:block; font-weight:600; font-size:0.9rem; margin-bottom:0.4rem;">Footer Description</label>
+      <input type="text" name="footer_text" value="<%= settings.footer_text %>" style="width:100%; padding:0.75rem 1rem; border:1px solid var(--line); border-radius:8px; font-size:0.95rem;">
+    </div>
+
+    <div style="margin-bottom:1.5rem;">
+      <label style="display:block; font-weight:600; font-size:0.9rem; margin-bottom:0.4rem;">Support Contact Email</label>
+      <input type="email" name="support_email" value="<%= settings.support_email %>" style="width:100%; padding:0.75rem 1rem; border:1px solid var(--line); border-radius:8px; font-size:0.95rem;">
+    </div>
+
+    <button type="submit" class="btn btn-primary btn-lg" style="cursor:pointer;">
+      Save Settings
+    </button>
+  </form>
+</div>
+
+<%- include('../layouts/admin-footer') %>
