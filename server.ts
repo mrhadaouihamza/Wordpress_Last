@@ -20,6 +20,8 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(cookieParser('wordpresso-secret-cookie-key'));
 app.use('/assets', express.static(path.join(__dirname, 'assets')));
+app.use('/public', express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'public')));
 
 // Helper for cart and session data in signed/unsigned cookies
 interface CartItem {
@@ -165,8 +167,21 @@ app.get('/cart', (req: Request, res: Response) => {
   });
 });
 
-// Add to Cart
-app.post('/cart/add', (req: Request, res: Response) => {
+// AJAX Cart API - Get Cart Status
+app.get('/api/cart', (req: Request, res: Response) => {
+  const cart = getCart(req);
+  const total = cart.reduce((sum, item) => sum + Number(item.price), 0);
+  res.json({
+    success: true,
+    cart,
+    count: cart.length,
+    total,
+    formatted_total: `$${total.toFixed(2)} USDT`,
+  });
+});
+
+// Add to Cart (supports both Form POST and AJAX JSON)
+app.post(['/cart/add', '/api/cart/add'], (req: Request, res: Response) => {
   const { product_id, category } = req.body;
   const id = Number(product_id);
   const cart = getCart(req);
@@ -188,18 +203,45 @@ app.post('/cart/add', (req: Request, res: Response) => {
     setCart(res, cart);
   }
 
+  const isAjax = req.xhr || req.headers.accept?.includes('application/json') || req.path.startsWith('/api/');
+  if (isAjax) {
+    const total = cart.reduce((sum, item) => sum + Number(item.price), 0);
+    return res.json({
+      success: true,
+      cart,
+      count: cart.length,
+      total,
+      formatted_total: `$${total.toFixed(2)} USDT`,
+      added_item: itemToAdd,
+    });
+  }
+
   res.redirect('/cart');
 });
 
-// Remove from Cart
-app.post('/cart/remove', (req: Request, res: Response) => {
+// Remove from Cart (supports both Form POST and AJAX JSON)
+app.post(['/cart/remove', '/api/cart/remove'], (req: Request, res: Response) => {
   const { index } = req.body;
   const idx = Number(index);
   const cart = getCart(req);
 
+  let removedItem: CartItem | null = null;
   if (!isNaN(idx) && idx >= 0 && idx < cart.length) {
-    cart.splice(idx, 1);
+    removedItem = cart.splice(idx, 1)[0] || null;
     setCart(res, cart);
+  }
+
+  const isAjax = req.xhr || req.headers.accept?.includes('application/json') || req.path.startsWith('/api/');
+  if (isAjax) {
+    const total = cart.reduce((sum, item) => sum + Number(item.price), 0);
+    return res.json({
+      success: true,
+      cart,
+      count: cart.length,
+      total,
+      formatted_total: `$${total.toFixed(2)} USDT`,
+      removed_item: removedItem,
+    });
   }
 
   res.redirect('/cart');

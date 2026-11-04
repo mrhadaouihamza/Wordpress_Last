@@ -16,23 +16,486 @@
   <span><%= locals.storeTagline || 'Premium WordPress tools for your next great website.' %></span>
   <a href="/plans">Explore plans <b>→</b></a>
 </aside>
+
+<!-- Slide-out Cart Drawer -->
+<div class="drawer-container" id="cart-drawer" aria-hidden="true">
+  <div class="drawer-backdrop" data-close-drawer></div>
+  <aside class="drawer-panel cart-drawer-panel" role="dialog" aria-modal="true" aria-labelledby="cart-drawer-title">
+    <div class="drawer-header">
+      <h3 class="drawer-title" id="cart-drawer-title">
+        <svg class="cart-icon-svg" style="width:20px; height:20px;" viewBox="0 0 24 24"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+        <span>Your Cart</span>
+        <span class="cart-badge <%= (locals.cartCount && locals.cartCount > 0) ? 'has-items' : '' %>" id="cart-drawer-count"><%= locals.cartCount || 0 %></span>
+      </h3>
+      <button type="button" class="drawer-close-btn" data-close-drawer aria-label="Close cart drawer">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+      </button>
+    </div>
+    
+    <div class="drawer-body" id="cart-drawer-body">
+      <!-- Dynamically filled by client script or fallback server render -->
+      <div style="display:flex; justify-content:center; align-items:center; height:200px; color:var(--muted);">
+        <span>Loading cart items...</span>
+      </div>
+    </div>
+
+    <div class="drawer-footer" id="cart-drawer-footer">
+      <div class="cart-subtotal-row">
+        <span class="cart-subtotal-label">Subtotal</span>
+        <span class="cart-subtotal-val" id="cart-drawer-total">$0.00 USDT</span>
+      </div>
+      <span class="cart-network-tag">✓ Instant BNB Smart Chain checkout</span>
+      <div class="cart-drawer-actions">
+        <form method="post" action="/checkout" id="cart-drawer-checkout-form" style="margin:0;">
+          <button type="submit" class="btn btn-primary btn-lg" style="width:100%; justify-content:center; cursor:pointer;" id="cart-drawer-checkout-btn">
+            Proceed to Checkout <span>→</span>
+          </button>
+        </form>
+        <a href="/cart" class="btn btn-ghost" style="width:100%; justify-content:center; font-size:0.88rem; border:1px solid var(--line); border-radius:8px;">
+          View Full Cart Page
+        </a>
+      </div>
+    </div>
+  </aside>
+</div>
+
+<!-- Slide-out Mobile Menu Drawer -->
+<div class="drawer-container" id="mobile-drawer" aria-hidden="true">
+  <div class="drawer-backdrop" data-close-drawer></div>
+  <aside class="drawer-panel mobile-drawer-panel" role="dialog" aria-modal="true" aria-labelledby="mobile-drawer-title">
+    <div class="drawer-header">
+      <a class="brand has-logo-img" href="/" id="mobile-drawer-title" aria-label="<%= locals.siteName || 'Wordpresso' %> Home">
+        <img src="/public/assets/aistudio/Logo_W_festif_et_wordpresso.store_e3a46ec2.png" alt="Wordpresso.store Logo" class="brand-logo-img" style="height:27px; width:auto;">
+      </a>
+      <button type="button" class="drawer-close-btn" data-close-drawer aria-label="Close navigation menu">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+      </button>
+    </div>
+
+    <div class="drawer-body">
+      <% if (locals.customer) { %>
+        <div class="mobile-user-card">
+          <div class="mobile-user-name"><%= locals.customer.name || 'Valued Customer' %></div>
+          <div class="mobile-user-email"><%= locals.customer.email %></div>
+          <div style="display:flex; gap:0.5rem; flex-wrap:wrap;">
+            <a href="/account" class="btn btn-outline" style="font-size:0.8rem; padding:0.35rem 0.65rem; border-radius:6px;">My Account</a>
+            <a href="/account/websites" class="btn btn-outline" style="font-size:0.8rem; padding:0.35rem 0.65rem; border-radius:6px;">Websites</a>
+          </div>
+        </div>
+      <% } %>
+
+      <div class="mobile-nav-group">
+        <span class="mobile-nav-group-title">Navigation</span>
+        <ul class="mobile-nav-list">
+          <li>
+            <a href="/store" class="mobile-nav-link">
+              <span>WordPress Store</span>
+              <span style="color:var(--muted); font-size:0.85rem;">→</span>
+            </a>
+          </li>
+          <li>
+            <a href="/plans" class="mobile-nav-link">
+              <span>Membership Plans</span>
+              <span style="color:var(--muted); font-size:0.85rem;">→</span>
+            </a>
+          </li>
+          <li>
+            <a href="/#why-us" class="mobile-nav-link">
+              <span>How Updates Work</span>
+              <span style="color:var(--muted); font-size:0.85rem;">↗</span>
+            </a>
+          </li>
+          <li>
+            <a href="/#about" class="mobile-nav-link">
+              <span>About &amp; FAQ</span>
+              <span style="color:var(--muted); font-size:0.85rem;">↗</span>
+            </a>
+          </li>
+          <li>
+            <a href="/cart" class="mobile-nav-link" id="mobile-cart-link">
+              <span style="display:flex; align-items:center; gap:0.5rem;">
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+                Shopping Cart
+              </span>
+              <span class="cart-badge <%= (locals.cartCount && locals.cartCount > 0) ? 'has-items' : '' %>" id="mobile-menu-cart-badge"><%= locals.cartCount || 0 %></span>
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      <div class="mobile-nav-group">
+        <span class="mobile-nav-group-title">Account Access</span>
+        <div class="mobile-auth-actions">
+          <% if (locals.customer) { %>
+            <a href="/account/orders" class="mobile-nav-link" style="padding-left:0.5rem;">Order History</a>
+            <form method="post" action="/logout" style="margin:0.5rem 0 0;">
+              <button type="submit" class="btn btn-outline" style="width:100%; justify-content:center; cursor:pointer; color:var(--bad); border-color:var(--line);">Sign Out</button>
+            </form>
+          <% } else { %>
+            <a href="/register" class="btn btn-primary" style="justify-content:center;">Create Free Account</a>
+            <a href="/login" class="btn btn-outline" style="justify-content:center;">Sign In</a>
+          <% } %>
+        </div>
+      </div>
+
+      <div style="border-top:1px solid var(--line); padding-top:1.25rem; font-size:0.84rem; color:var(--muted); display:flex; flex-direction:column; gap:0.5rem;">
+        <a href="/admin" target="_blank" style="color:inherit; text-decoration:none;">Admin Panel ↗</a>
+        <% if (locals.supportEmail) { %>
+          <a href="mailto:<%= locals.supportEmail %>" style="color:inherit; text-decoration:none;"><%= locals.supportEmail %></a>
+        <% } %>
+      </div>
+    </div>
+  </aside>
+</div>
+
+<!-- Main 3-Column Redesigned Header -->
 <header class="site-header">
   <div class="container header-inner">
-    <a class="brand" href="/"><%= locals.siteName || 'Wordpresso' %><span class="brand-tld">.store</span></a>
-    <nav class="nav">
-      <a href="/store">Store</a>
-      <a href="/plans">Plans</a>
-      <a href="/cart">Cart <% if (locals.cartCount && locals.cartCount > 0) { %><span class="count-pill"><%= locals.cartCount %></span><% } %></a>
-      <% if (locals.customer) { %>
-        <a href="/account">My account</a>
-        <form method="post" action="/logout" class="inline-form" style="display:inline;">
-          <button type="submit" class="btn btn-ghost" style="cursor:pointer; background:transparent; border:none; color:inherit; font:inherit;">Sign out</button>
-        </form>
-      <% } else { %>
-        <a href="/login">Sign in</a>
-        <a href="/register" class="btn btn-primary">Create account</a>
-      <% } %>
+    <!-- Left Column: Brand Logo -->
+    <div class="header-left">
+      <a class="brand has-logo-img" href="/" aria-label="<%= locals.siteName || 'Wordpresso' %> Home">
+        <img src="/public/assets/aistudio/Logo_W_festif_et_wordpresso.store_e3a46ec2.png" alt="Wordpresso.store Logo" class="brand-logo-img" width="168" height="32">
+      </a>
+    </div>
+
+    <!-- Center Column: Centered Navigation Menu -->
+    <nav class="header-center" aria-label="Main Navigation">
+      <ul class="desktop-nav">
+        <li><a href="/store">Store</a></li>
+        <li><a href="/plans">Plans</a></li>
+        <li><a href="/#why-us">How it works</a></li>
+        <li><a href="/#about">About &amp; FAQ</a></li>
+      </ul>
     </nav>
+
+    <!-- Right Column: Cart Button & Action Controls -->
+    <div class="header-right">
+      <!-- Desktop Auth Links -->
+      <div class="desktop-auth-links">
+        <% if (locals.customer) { %>
+          <a href="/account">My account</a>
+          <form method="post" action="/logout" class="inline-form" style="display:inline; margin:0;">
+            <button type="submit" class="btn btn-ghost" style="cursor:pointer; background:transparent; border:none; color:inherit; font:inherit; font-size:0.82rem; padding:0.25rem 0.4rem; line-height:1.2;">Sign out</button>
+          </form>
+        <% } else { %>
+          <a href="/login">Sign in</a>
+          <a href="/register" class="btn btn-primary" style="padding:0.32rem 0.72rem; font-size:0.8rem; line-height:1.2; border-radius:6px;">Create account</a>
+        <% } %>
+      </div>
+
+      <!-- Modern Cart Button with Shopping Cart Icon & Badge -->
+      <button type="button" class="cart-trigger-btn" id="header-cart-trigger" aria-label="Open shopping cart drawer" aria-haspopup="dialog">
+        <span class="cart-icon-wrap">
+          <svg class="cart-icon-svg" viewBox="0 0 24 24" aria-hidden="true">
+            <circle cx="9" cy="21" r="1"></circle>
+            <circle cx="20" cy="21" r="1"></circle>
+            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+          </svg>
+        </span>
+        <span style="font-weight:700;">Cart</span>
+        <span class="cart-badge <%= (locals.cartCount && locals.cartCount > 0) ? 'has-items' : '' %>" id="header-cart-badge"><%= locals.cartCount || 0 %></span>
+      </button>
+
+      <!-- Hamburger Button (Visible on Small / Mobile Screens) -->
+      <button type="button" class="hamburger-btn" id="mobile-menu-toggle" aria-label="Open mobile navigation menu" aria-controls="mobile-drawer" aria-expanded="false">
+        <div class="hamburger-lines" aria-hidden="true">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+      </button>
+    </div>
   </div>
 </header>
+
 <main class="container">
+
+<!-- Client-side Interactive Drawer & AJAX Cart Engine -->
+<script>
+(function() {
+  'use strict';
+
+  // Elements
+  const cartDrawer = document.getElementById('cart-drawer');
+  const mobileDrawer = document.getElementById('mobile-drawer');
+  const cartTrigger = document.getElementById('header-cart-trigger');
+  const mobileToggle = document.getElementById('mobile-menu-toggle');
+  const headerCartBadge = document.getElementById('header-cart-badge');
+  const drawerCartBadge = document.getElementById('cart-drawer-count');
+  const mobileCartBadge = document.getElementById('mobile-menu-cart-badge');
+  const cartBody = document.getElementById('cart-drawer-body');
+  const cartTotal = document.getElementById('cart-drawer-total');
+  const cartCheckoutBtn = document.getElementById('cart-drawer-checkout-btn');
+
+  // State cache
+  let currentCart = [];
+
+  // --- Drawer Open & Close Helpers ---
+  function openDrawer(drawerEl) {
+    if (!drawerEl) return;
+    drawerEl.classList.add('open');
+    drawerEl.setAttribute('aria-hidden', 'false');
+    document.body.classList.add('drawer-open');
+    if (drawerEl === mobileDrawer && mobileToggle) {
+      mobileToggle.setAttribute('aria-expanded', 'true');
+    }
+  }
+
+  function closeDrawer(drawerEl) {
+    if (!drawerEl) return;
+    drawerEl.classList.remove('open');
+    drawerEl.setAttribute('aria-hidden', 'true');
+    // Only remove drawer-open if no other drawer is open
+    if (!document.querySelector('.drawer-container.open')) {
+      document.body.classList.remove('drawer-open');
+    }
+    if (drawerEl === mobileDrawer && mobileToggle) {
+      mobileToggle.setAttribute('aria-expanded', 'false');
+    }
+  }
+
+  function closeAllDrawers() {
+    closeDrawer(cartDrawer);
+    closeDrawer(mobileDrawer);
+  }
+
+  // Event Listeners for Open/Close
+  if (cartTrigger) {
+    cartTrigger.addEventListener('click', function(e) {
+      e.preventDefault();
+      closeDrawer(mobileDrawer);
+      openDrawer(cartDrawer);
+      loadCart();
+    });
+  }
+
+  if (mobileToggle) {
+    mobileToggle.addEventListener('click', function(e) {
+      e.preventDefault();
+      closeDrawer(cartDrawer);
+      openDrawer(mobileDrawer);
+    });
+  }
+
+  // Close triggers (buttons with data-close-drawer or clicking backdrop)
+  document.querySelectorAll('[data-close-drawer]').forEach(function(el) {
+    el.addEventListener('click', function(e) {
+      e.preventDefault();
+      const parentDrawer = el.closest('.drawer-container');
+      if (parentDrawer) {
+        closeDrawer(parentDrawer);
+      } else {
+        closeAllDrawers();
+      }
+    });
+  });
+
+  // Mobile menu cart link: closes mobile menu and opens cart drawer
+  const mobileCartLink = document.getElementById('mobile-cart-link');
+  if (mobileCartLink) {
+    mobileCartLink.addEventListener('click', function(e) {
+      e.preventDefault();
+      closeDrawer(mobileDrawer);
+      openDrawer(cartDrawer);
+      loadCart();
+    });
+  }
+
+  // Keyboard accessibility: ESC closes open drawers
+  window.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape' || e.key === 'Esc') {
+      closeAllDrawers();
+    }
+  });
+
+  // --- AJAX Cart Renderer ---
+  function updateBadges(count) {
+    const num = Number(count) || 0;
+    [headerCartBadge, drawerCartBadge, mobileCartBadge].forEach(function(badge) {
+      if (badge) {
+        badge.textContent = num;
+        if (num > 0) {
+          badge.classList.add('has-items');
+        } else {
+          badge.classList.remove('has-items');
+        }
+        badge.classList.remove('bump');
+        void badge.offsetWidth; // trigger reflow
+        badge.classList.add('bump');
+      }
+    });
+  }
+
+  function renderCart(cartItems, totalFormatted) {
+    currentCart = cartItems || [];
+    const count = currentCart.length;
+
+    if (!cartBody) return;
+
+    if (count === 0) {
+      cartBody.innerHTML = `
+        <div class="cart-drawer-empty">
+          <div class="cart-empty-icon" aria-hidden="true">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+          </div>
+          <h4>Your cart is empty</h4>
+          <p>Explore verified WordPress plugins and themes to add tools to your toolkit.</p>
+          <a href="/store" class="btn btn-primary" data-close-drawer style="cursor:pointer;">Browse Catalog</a>
+        </div>
+      `;
+      if (cartTotal) cartTotal.textContent = '$0.00 USDT';
+      if (cartCheckoutBtn) {
+        cartCheckoutBtn.disabled = true;
+        cartCheckoutBtn.style.opacity = '0.5';
+        cartCheckoutBtn.style.cursor = 'not-allowed';
+      }
+      return;
+    }
+
+    if (cartCheckoutBtn) {
+      cartCheckoutBtn.disabled = false;
+      cartCheckoutBtn.style.opacity = '1';
+      cartCheckoutBtn.style.cursor = 'pointer';
+    }
+
+    let itemsHtml = '<div class="cart-drawer-list">';
+    currentCart.forEach(function(item, idx) {
+      const price = Number(item.price).toFixed(2);
+      const categoryIcon = item.category === 'Theme' ? '◫' : (item.category === 'Plan' ? '◈' : '⌘');
+      itemsHtml += `
+        <div class="cart-drawer-item" data-index="${idx}">
+          <div class="cart-item-details">
+            <span class="cart-item-category">${categoryIcon} ${item.category}</span>
+            <div class="cart-item-name">${escapeHtml(item.name)}</div>
+            <div class="cart-item-price">$${price} <small style="font-size:0.75rem; color:var(--muted);">USDT</small></div>
+          </div>
+          <button type="button" class="cart-item-remove-btn" data-remove-index="${idx}" title="Remove item" aria-label="Remove ${escapeHtml(item.name)}">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+          </button>
+        </div>
+      `;
+    });
+    itemsHtml += '</div>';
+
+    cartBody.innerHTML = itemsHtml;
+    if (cartTotal) cartTotal.textContent = totalFormatted || `$${currentCart.reduce((s, it) => s + Number(it.price), 0).toFixed(2)} USDT`;
+
+    // Bind remove buttons
+    cartBody.querySelectorAll('[data-remove-index]').forEach(function(btn) {
+      btn.addEventListener('click', function(e) {
+        e.preventDefault();
+        const index = btn.getAttribute('data-remove-index');
+        removeCartItem(index, btn.closest('.cart-drawer-item'));
+      });
+    });
+  }
+
+  function escapeHtml(str) {
+    if (!str) return '';
+    return String(str)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#039;');
+  }
+
+  // --- AJAX API Calls ---
+  function loadCart() {
+    fetch('/api/cart', {
+      headers: { 'Accept': 'application/json' }
+    })
+    .then(function(res) { return res.json(); })
+    .then(function(data) {
+      if (data && data.success) {
+        updateBadges(data.count);
+        renderCart(data.cart, data.formatted_total);
+      }
+    })
+    .catch(function(err) {
+      console.warn('Could not load cart data via AJAX:', err);
+    });
+  }
+
+  function removeCartItem(index, itemElement) {
+    if (itemElement) {
+      itemElement.style.opacity = '0.4';
+      itemElement.style.pointerEvents = 'none';
+    }
+
+    fetch('/api/cart/remove', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
+      body: JSON.stringify({ index: index })
+    })
+    .then(function(res) { return res.json(); })
+    .then(function(data) {
+      if (data && data.success) {
+        updateBadges(data.count);
+        renderCart(data.cart, data.formatted_total);
+      }
+    })
+    .catch(function(err) {
+      console.warn('Error removing cart item:', err);
+      loadCart();
+    });
+  }
+
+  // --- Global AJAX Add-To-Cart Interceptor ---
+  // Any form targeting /cart/add on the page is smoothly handled via AJAX without reload
+  document.addEventListener('submit', function(e) {
+    const form = e.target;
+    if (form && (form.action.includes('/cart/add') || form.getAttribute('action') === '/cart/add')) {
+      e.preventDefault();
+      
+      const formData = new FormData(form);
+      const payload = {
+        product_id: formData.get('product_id'),
+        category: formData.get('category')
+      };
+
+      const submitBtn = form.querySelector('button[type="submit"]');
+      const originalBtnText = submitBtn ? submitBtn.innerHTML : '';
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = 'Adding...';
+      }
+
+      fetch('/api/cart/add', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify(payload)
+      })
+      .then(function(res) { return res.json(); })
+      .then(function(data) {
+        if (data && data.success) {
+          updateBadges(data.count);
+          renderCart(data.cart, data.formatted_total);
+          // Smoothly slide open cart drawer to display the added item
+          openDrawer(cartDrawer);
+        }
+      })
+      .catch(function(err) {
+        console.warn('AJAX add to cart failed, falling back to form submit:', err);
+        form.submit();
+      })
+      .finally(function() {
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = originalBtnText;
+        }
+      });
+    }
+  });
+
+  // Initial cart load in background on page load
+  loadCart();
+
+})();
+</script>
