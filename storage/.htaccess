@@ -1,0 +1,2 @@
+# Defense in depth: storage is blocked in the parent public_html/.htaccess too.
+Require all denied

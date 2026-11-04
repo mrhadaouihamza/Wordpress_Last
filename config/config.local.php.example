@@ -1,0 +1,16 @@
+<?php
+// Copy to config.local.php and enter values from cPanel > MySQL Databases.
+$private = dirname(__DIR__) . '/storage';
+return [
+    'site_url' => 'https://dashboard.fornax.host',
+    'db_driver' => 'mysql',
+    'db_host' => 'localhost',
+    'db_name' => 'CPANELPREFIX_wordpresso',
+    'db_user' => 'CPANELPREFIX_user',
+    'db_pass' => 'replace-with-database-user-password',
+    'installer_key' => 'replace-with-a-private-random-string-of-32-or-more-characters',
+    'app_key_file' => $private . '/app_key',
+    'packages_dir' => $private . '/packages',
+    'logs_dir' => $private . '/logs',
+    'log_retention_days' => 30, // Days to keep operational logs in database (0 disables auto-clean)
+];
